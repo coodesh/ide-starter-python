@@ -1,0 +1,30 @@
+schemaVersion: 2.2.0
+metadata:
+  name: ide-starter-python
+components:
+  - name: tools
+    container:
+      endpoints:
+        - name: app
+          targetPort: 3000
+          exposure: public
+commands:
+  - id: install
+    exec:
+      component: tools
+      commandLine: "pip install -r requirements.txt"
+      workingDir: ${PROJECT_SOURCE}
+  - id: start
+    exec:
+      component: tools
+      commandLine: "python -m app.server"
+      workingDir: ${PROJECT_SOURCE}
+  - id: test
+    exec:
+      component: tools
+      commandLine: "python -m unittest discover -s tests -v"
+      workingDir: ${PROJECT_SOURCE}
+events:
+  postStart:
+    - install
+    - start
